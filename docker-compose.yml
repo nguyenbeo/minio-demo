@@ -1,0 +1,28 @@
+version: '3'
+services:
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    volumes:
+      - /tmp/data:/data
+    environment:
+      - "MINIO_ACCESS_KEY=minio"
+      - "MINIO_SECRET_KEY=minio123"
+    command: server /data
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      while ! nc -z minio 9000;
+      do echo 'Wait minio to startup...' && sleep 0.1;
+      done;
+      sleep 5;
+      /usr/bin/mc config host add localminio http://minio:9000 minio minio123;
+      /usr/bin/mc rm -r --force localminio/testing;
+      /usr/bin/mc mb localminio/testing;
+      exit 0;
+      "
