@@ -23,7 +23,7 @@ public class MinioDemoApplication {
 		SpringApplication.run(MinioDemoApplication.class, args);
 
 		try {
-			MinioClient minioClient = new MinioClient("http://127.0.0.1:9000", accessKey, secretKey);
+			MinioClient minioClient = new MinioClient("http://localhost", accessKey, secretKey);
 
 			boolean isExistBucket = minioClient.bucketExists(bucket);
 			if (isExistBucket) {

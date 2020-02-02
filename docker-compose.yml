@@ -1,5 +1,13 @@
 version: '3'
 services:
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    image: minio-proxy
+    ports:
+      - "80:80"
+
   minio:
     image: minio/minio
     ports:
